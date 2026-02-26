@@ -1,16 +1,71 @@
-# 🏦 Bank API – TODO List (NestJS)
+# 🏦 Bank API – TODO List z mikroserwisami (NestJS)
+
+---
+
+# 🔹 Mikroserwisy i ich opis
+
+## 1️⃣ Auth Service
+
+* Obsługa rejestracji i logowania (JWT + refresh tokens)
+* Hashowanie haseł
+* Rate limiting logowania
+* Blokada konta po X nieudanych próbach
+* Role-based access control (USER / ADMIN / SUPPORT)
+* Custom decorator @CurrentUser
+
+## 2️⃣ User Service
+
+* Zarządzanie profilami użytkowników
+* KYC (zweryfikowany / niezweryfikowany)
+* Aktualizacja ról i statusów (ADMIN)
+* Historia działań użytkownika (opcjonalnie)
+
+## 3️⃣ Account Service
+
+* Tworzenie i zarządzanie kontami bankowymi
+* Obsługa wielu walut
+* Sprawdzenie salda
+* Aktywacja/dezaktywacja kont
+
+## 4️⃣ Transaction Service
+
+* Przelewy wewnętrzne i zewnętrzne (symulacja)
+* Historia transakcji
+* Harmonogramowane przelewy (cron)
+* Obsługa transakcji w bazie + pessimistic locking
+* Emitowanie eventów dla Audit i Notification Service
+
+## 5️⃣ Card Service
+
+* Tworzenie kart przypisanych do kont
+* Blokada / odblokowanie kart
+* Limity dzienne
+* Symulacja płatności kartą
+
+## 6️⃣ Audit / Notification Service
+
+* Rejestrowanie wszystkich operacji finansowych
+* Logi działań administratorów
+* Powiadomienia dla użytkowników (opcjonalnie WebSocket / email)
+
+## 7️⃣ API Gateway
+
+* Punkt wejścia dla frontendu / mobile app
+* Agregacja endpointów mikroserwisów
+* Autoryzacja JWT
+* Walidacja requestów
 
 ---
 
 # ✅ 0. Project Setup
 
-* [x] Initialize NestJS project
+* [ ] Initialize NestJS project (monorepo lub Nx)
 * [ ] Configure ESLint + Prettier
 * [ ] Setup environment variables (.env)
 * [ ] Configure ConfigModule
 * [ ] Setup Docker (app + PostgreSQL)
-* [ ] Setup Docker Compose
-* [ ] Configure Swagger
+* [ ] Setup Docker Compose for all services
+* [ ] Configure Swagger in API Gateway
 * [ ] Global validation pipe
 * [ ] Global exception filter
 * [ ] Logging interceptor
@@ -20,7 +75,7 @@
 
 # ✅ 1. Database & Infrastructure
 
-* [ ] Choose ORM (Prisma / TypeORM)
+* [ ] Choose ORM (Prisma / TypeORM) for each microservice
 * [ ] Configure PostgreSQL connection
 * [ ] Create migrations system
 * [ ] Seed script
@@ -29,60 +84,31 @@
 
 ---
 
-# ✅ 2. Core Entities (DB Models)
+# ✅ 2. Core Entities (per service)
 
-## Users
+### Auth Service
 
-* [ ] id
-* [ ] email (unique)
-* [ ] password (hashed)
-* [ ] role (USER / ADMIN / SUPPORT)
-* [ ] isBlocked
-* [ ] kycStatus
-* [ ] failedLoginAttempts
-* [ ] createdAt / updatedAt
+* Users, roles, failedLoginAttempts, JWT
 
-## Accounts
+### User Service
 
-* [ ] id
-* [ ] userId (relation)
-* [ ] currency
-* [ ] balance
-* [ ] isActive
-* [ ] createdAt
+* Profiles, KYC status, history logs
 
-## Transactions
+### Account Service
 
-* [ ] id
-* [ ] fromAccountId
-* [ ] toAccountId
-* [ ] amount
-* [ ] currency
-* [ ] type (INTERNAL / EXTERNAL / CARD)
-* [ ] status (PENDING / COMPLETED / FAILED)
-* [ ] description
-* [ ] createdAt
+* Accounts, balance, currency, isActive
 
-## Cards
+### Transaction Service
 
-* [ ] id
-* [ ] accountId
-* [ ] cardNumber (masked)
-* [ ] expiryDate
-* [ ] cvv (hashed)
-* [ ] dailyLimit
-* [ ] isBlocked
+* Transactions, type, status, description
 
-## AuditLogs
+### Card Service
 
-* [ ] id
-* [ ] userId
-* [ ] action
-* [ ] entity
-* [ ] entityId
-* [ ] ipAddress
-* [ ] metadata (JSON)
-* [ ] createdAt
+* Cards, limits, status
+
+### Audit Service
+
+* AuditLogs: userId, action, entity, entityId, ipAddress, metadata, createdAt
 
 ---
 
@@ -91,13 +117,10 @@
 * [ ] Register endpoint
 * [ ] Login endpoint
 * [ ] Hash passwords (bcrypt)
-* [ ] JWT access token
-* [ ] Refresh token
-* [ ] Token rotation
-* [ ] Logout
-* [ ] Rate limiting on login
-* [ ] Lock account after X failed attempts
+* [ ] JWT access token + refresh token
+* [ ] Logout endpoint
 * [ ] Role-based guard
+* [ ] Rate limiting + account lock
 * [ ] Custom @CurrentUser decorator
 
 ---
@@ -122,31 +145,11 @@
 
 ---
 
-# ✅ 6. Transactions Module (CRITICAL)
+# ✅ 6. Transactions Module
 
-## Internal Transfer
-
-* [ ] Validate ownership
-* [ ] Validate sufficient balance
-* [ ] Start DB transaction
-* [ ] Lock accounts (pessimistic lock)
-* [ ] Decrease sender balance
-* [ ] Increase receiver balance
-* [ ] Create transaction record
-* [ ] Commit transaction
-* [ ] Rollback on error
-
-## External Transfer (Simulation)
-
-* [ ] Deduct funds
-* [ ] Mark as PENDING
-* [ ] Simulate async confirmation
-* [ ] Update to COMPLETED
-
-## Additional
-
-* [ ] Transaction history (paginated)
-* [ ] Filtering (date / type / status)
+* [ ] Internal transfer: validate ownership, balance, DB transaction, locks, create record
+* [ ] External transfer: simulate async confirmation
+* [ ] Transaction history (paginated + filters)
 * [ ] Scheduled transfers (cron)
 
 ---
@@ -157,57 +160,54 @@
 * [ ] Block/unblock card
 * [ ] Set daily limit
 * [ ] Simulate card payment
-* [ ] Deduct funds with limit validation
 * [ ] Decline if limit exceeded
 
 ---
 
 # ✅ 8. Security Enhancements
 
-* [ ] 2FA simulation (code verification)
+* [ ] 2FA simulation
 * [ ] IP logging
-* [ ] Rate limiting (global)
+* [ ] Rate limiting
 * [ ] Helmet
 * [ ] CORS config
-* [ ] Data masking in responses
+* [ ] Data masking
 * [ ] Prevent negative balances
 
 ---
 
 # ✅ 9. Audit System
 
-* [ ] Log every financial operation
+* [ ] Log all financial operations
 * [ ] Log admin actions
 * [ ] Middleware/interceptor for logging
 * [ ] Audit query endpoint (ADMIN only)
 
 ---
 
-# ✅ 10. Advanced Architecture (Optional – Senior Level)
+# ✅ 10. Advanced Architecture (Optional)
 
-* [ ] Implement CQRS pattern
+* [ ] Implement CQRS
 * [ ] Separate Commands and Queries
 * [ ] Domain events
 * [ ] Event emitter for notifications
 * [ ] Read/write separation
-* [ ] Modular monolith structure
+* [ ] Modular monolith or microservice structure
 
 ---
 
 # ✅ 11. Testing
 
-* [ ] Unit tests for services
-* [ ] e2e tests for auth
-* [ ] e2e tests for transfers
+* [ ] Unit tests per service
+* [ ] e2e tests for auth, accounts, transactions
 * [ ] Test transaction rollback
-* [ ] Test edge cases (insufficient funds)
-* [ ] Test concurrency case
+* [ ] Test edge cases (insufficient funds, concurrency)
 
 ---
 
 # ✅ 12. DevOps & Deployment
 
-* [ ] Production Dockerfile
+* [ ] Dockerfile per microservice
 * [ ] Health check endpoint
 * [ ] CI pipeline (GitHub Actions)
 * [ ] Deploy to VPS / Railway / Render
@@ -215,13 +215,12 @@
 
 ---
 
-# ✅ 13. Bonus Features (Impressive Additions)
+# ✅ 13. Bonus Features
 
 * [ ] Multi-currency accounts
-* [ ] Currency conversion logic
+* [ ] Currency conversion
 * [ ] Freeze funds (authorization hold)
-* [ ] Monthly statement generator
-* [ ] PDF statement export
+* [ ] Monthly statement generator + PDF export
 * [ ] WebSocket notifications
 * [ ] Redis caching
 * [ ] Admin dashboard API
@@ -231,7 +230,7 @@
 # 🚀 Final Polish
 
 * [ ] Clean README with architecture explanation
-* [ ] ER diagram
+* [ ] ER diagram + microservices diagram
 * [ ] API documentation examples
 * [ ] Postman collection
 * [ ] Demo credentials
@@ -241,11 +240,4 @@
 
 # 🏆 Goal
 
-Build it like a real fintech backend – not a CRUD tutorial.
-Focus on:
-
-* Data consistency
-* Security
-* Architecture
-* Edge cases
-* Production readiness
+Zbudować działający Bank API jako system mikroserwisowy, pokazujący profesjonalną architekturę, bezpieczeństwo, skalowalność i logikę finansową.
