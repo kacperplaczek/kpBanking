@@ -1,65 +1,65 @@
-# 🏦 Bank API – TODO List z mikroserwisami (NestJS)
+# 🏦 Bank API – TODO List with Microservices (NestJS)
 
 ---
 
-# 🔹 Mikroserwisy i ich opis
+# 🔹 Microservices and their Description
 
 ## 1️⃣ Auth Service
 
-* Obsługa rejestracji i logowania (JWT + refresh tokens)
-* Hashowanie haseł
-* Rate limiting logowania
-* Blokada konta po X nieudanych próbach
+* Handles registration and login (JWT + refresh tokens)
+* Password hashing
+* Login rate limiting
+* Account lock after X failed attempts
 * Role-based access control (USER / ADMIN / SUPPORT)
 * Custom decorator @CurrentUser
 
 ## 2️⃣ User Service
 
-* Zarządzanie profilami użytkowników
-* KYC (zweryfikowany / niezweryfikowany)
-* Aktualizacja ról i statusów (ADMIN)
-* Historia działań użytkownika (opcjonalnie)
+* Manage user profiles
+* KYC (verified / unverified)
+* Update roles and statuses (ADMIN)
+* Optional: user activity history
 
 ## 3️⃣ Account Service
 
-* Tworzenie i zarządzanie kontami bankowymi
-* Obsługa wielu walut
-* Sprawdzenie salda
-* Aktywacja/dezaktywacja kont
+* Create and manage bank accounts
+* Multi-currency support
+* Check balance
+* Activate / deactivate accounts
 
 ## 4️⃣ Transaction Service
 
-* Przelewy wewnętrzne i zewnętrzne (symulacja)
-* Historia transakcji
-* Harmonogramowane przelewy (cron)
-* Obsługa transakcji w bazie + pessimistic locking
-* Emitowanie eventów dla Audit i Notification Service
+* Internal and external transfers (simulation)
+* Transaction history
+* Scheduled transfers (cron)
+* DB transaction handling + pessimistic locking
+* Emit events for Audit and Notification Service
 
 ## 5️⃣ Card Service
 
-* Tworzenie kart przypisanych do kont
-* Blokada / odblokowanie kart
-* Limity dzienne
-* Symulacja płatności kartą
+* Issue cards linked to accounts
+* Block / unblock cards
+* Daily limits
+* Simulate card payments
 
 ## 6️⃣ Audit / Notification Service
 
-* Rejestrowanie wszystkich operacji finansowych
-* Logi działań administratorów
-* Powiadomienia dla użytkowników (opcjonalnie WebSocket / email)
+* Log all financial operations
+* Log admin actions
+* User notifications (optional: WebSocket / email)
 
 ## 7️⃣ API Gateway
 
-* Punkt wejścia dla frontendu / mobile app
-* Agregacja endpointów mikroserwisów
-* Autoryzacja JWT
-* Walidacja requestów
+* Entry point for frontend / mobile app
+* Aggregates endpoints from microservices
+* JWT authorization
+* Request validation
 
 ---
 
 # ✅ 0. Project Setup
 
-* [ ] Initialize NestJS project (monorepo lub Nx)
+* [ ] Initialize NestJS project (monorepo or Nx)
 * [ ] Configure ESLint + Prettier
 * [ ] Setup environment variables (.env)
 * [ ] Configure ConfigModule
@@ -228,6 +228,7 @@
 ---
 
 # 🚀 Final
+
 * [ ] Clean README with architecture explanation
 * [ ] ER diagram + microservices diagram
 * [ ] API documentation examples
@@ -239,4 +240,4 @@
 
 # 🏆 Goal
 
-Zbudować działający Bank API jako system mikroserwisowy, pokazujący profesjonalną architekturę, bezpieczeństwo, skalowalność i logikę finansową.
+Build a fully working Bank API as a microservice system, demonstrating professional architecture, security, scalability, and financial logic.
