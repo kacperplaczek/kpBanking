@@ -4,7 +4,7 @@
 
 # ✅ 0. Project Setup
 
-* [ ] Initialize NestJS project
+* [x] Initialize NestJS project
 * [ ] Configure ESLint + Prettier
 * [ ] Setup environment variables (.env)
 * [ ] Configure ConfigModule
