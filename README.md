@@ -1,4 +1,4 @@
-# 🏦 Bank API – TODO List with Microservices (NestJS)
+# 🏦 NodeBank Bank API – TODO List with Microservices (NestJS)
 
 ---
 
